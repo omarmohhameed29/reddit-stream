@@ -1,0 +1,17 @@
+version: '3.8'
+
+services:
+  postgres:
+    image: postgres:15
+    container_name: reddit-postgres
+    environment:
+      - POSTGRES_USER=reddit_user
+      - POSTGRES_PASSWORD=reddit_pass
+      - POSTGRES_DB=reddit_db
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+
+volumes:
+  postgres_data:
