@@ -140,6 +140,7 @@ praw.ini
 # Spyder project settings
 .spyderproject
 .spyproject
+last_run.json
 
 # Rope project settings
 .ropeproject
