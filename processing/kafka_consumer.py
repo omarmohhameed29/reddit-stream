@@ -1,14 +1,18 @@
 from kafka import KafkaConsumer
 import json
-from sentiment_analysis import analyze_sentiment
 from datetime import datetime
+import os
+import sys
 
-# Set up Kafka consumer
+sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(__file__), '..')))
+from db.db_client import insert_post  # Function to insert posts into PostgreSQL
+from sentiment_analysis import analyze_sentiment
+
 consumer = KafkaConsumer(
     'reddit_posts',
     bootstrap_servers='localhost:9092',
     value_deserializer=lambda m: json.loads(m.decode('utf-8')),
-    auto_offset_reset='earliest', 
+    auto_offset_reset='earliest',
     enable_auto_commit=True,
     group_id='sentiment-consumer-group'
 )
@@ -26,7 +30,8 @@ def process_post(post):
     print(f"Posted at: {datetime.utcfromtimestamp(post['created_utc']).strftime('%Y-%m-%d %H:%M:%S')} UTC")
     print("===")
 
-    # You could add logic here to insert the post + sentiment into a PostgreSQL DB
+    # Insert post data with sentiment into PostgreSQL
+    insert_post(post, sentiment, score)
 
 def consume():
     print("Kafka consumer started. Listening to 'reddit_posts'...")

@@ -2,8 +2,7 @@ import psycopg2
 from psycopg2 import sql
 import os
 
-def create_table_if_not_exists():
-    # Connect to PostgreSQL
+def get_db_connection():
     conn = psycopg2.connect(
         dbname="reddit_db",
         user="reddit_user",
@@ -11,6 +10,11 @@ def create_table_if_not_exists():
         host="localhost",
         port="5432"
     )
+    return conn
+
+def create_table_if_not_exists():
+    # Connect to PostgreSQL
+    conn = get_db_connection()
     cur = conn.cursor()
     
     # Query to check if the table exists
@@ -51,31 +55,27 @@ def create_table_if_not_exists():
     cur.close()
     conn.close()
 
-def insert_post(post_data):
+def insert_post(post, sentiment, sentiment_score):
     # Connect to PostgreSQL
-    conn = psycopg2.connect(
-        dbname="reddit_db",
-        user="reddit_user",
-        password="reddit_pass",
-        host="localhost",
-        port="5432"
-    )
+    conn = get_db_connection()
     cur = conn.cursor()
     
-    # Insert query
+    # Insert statement
     insert_query = """
-    INSERT INTO reddit_posts (id, title, author, score, num_comments, created_utc, subreddit, url, is_self, selftext)
-    VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s)
-    ON CONFLICT (id) DO NOTHING;
+    INSERT INTO reddit_posts (id, title, author, score, num_comments, created_utc, subreddit, url, is_self, selftext, sentiment, sentiment_score)
+    VALUES (%s, %s, %s, %s, %s, to_timestamp(%s), %s, %s, %s, %s, %s, %s)
+    ON CONFLICT (id) DO NOTHING;  -- Avoid inserting duplicates
     """
     
-    # Execute the insert
+    post_data = (
+        post["id"], post["title"], post["author"], post["score"], post["num_comments"],
+        post["created_utc"], post["subreddit"], post["url"], post["is_self"],
+        post["text"], sentiment, sentiment_score
+    )
+
+    # Execute the insert query
     cur.execute(insert_query, post_data)
     conn.commit()
-    print("Post inserted or already exists!")
-    
+
     cur.close()
     conn.close()
-
-if __name__ == "__main__":
-    create_table_if_not_exists()  # Check and create the table if necessary.
