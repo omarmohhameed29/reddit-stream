@@ -3,8 +3,9 @@ from datetime import datetime
 import json
 import os
 import sys
+
 sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(__file__), '..')))
-from processing.kafka_producer import publish_post  # Import the Kafka producer
+from processing.kafka_producer import publish_post 
 
 reddit = praw.Reddit(site_name="dev")
 

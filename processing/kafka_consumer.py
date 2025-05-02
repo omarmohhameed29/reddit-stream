@@ -7,6 +7,7 @@ import sys
 sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(__file__), '..')))
 from db.db_client import insert_post  # Function to insert posts into PostgreSQL
 from sentiment_analysis import analyze_sentiment
+from storage._elasticsearch import index_post
 
 consumer = KafkaConsumer(
     'reddit_posts',
@@ -38,6 +39,7 @@ def consume():
     for message in consumer:
         post = message.value
         process_post(post)
+        index_post(post)
 
 if __name__ == "__main__":
     consume()
