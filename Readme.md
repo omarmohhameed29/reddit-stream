@@ -1,6 +1,12 @@
-# 🧠 Reddit Sentiment Analyzer (Data Engineering Project)
+# 🧠 RedPulse: Reddit Sentiment Analyzer
 
 This is a full-stack data engineering project that ingests Reddit posts, streams them via Kafka, performs sentiment analysis, stores the results in PostgreSQL and Elasticsearch, and visualizes them with Kibana. The system is orchestrated using Docker.
+
+## 🏗️ Architecture
+
+![Project Architecture](/assets/project_arch.png)
+
+*The architecture diagram shows the data flow from Reddit through Kafka to storage and visualization.*
 
 ## 📚 Table of Contents
 - [🚀 Features](#-features)
@@ -8,10 +14,9 @@ This is a full-stack data engineering project that ingests Reddit posts, streams
 - [📦 Project Structure](#-project-structure)
 - [⚙️ How to Run](#️-how-to-run)
 - [📈 Visualizations](#-visualizations)
-- [🏗️ Architecture](#️-architecture)
 - [📋 Future Improvements](#-future-improvements)
 
-## Features
+##  Features
 - ✅ Scrape real-time Reddit data using PRAW.
 - ✅ Publish Reddit posts to Kafka.
 - ✅ Consume posts and perform sentiment analysis.
@@ -50,8 +55,8 @@ reddit-sentiment-analyzer/
 
 ### 1. Clone the repo
 ```bash
-git clone https://github.com/your-username/reddit-sentiment-analyzer.git
-cd reddit-sentiment-analyzer
+git clone https://github.com/omarmohhameed29/reddit-stream.git
+cd reddit-stream
 ```
 
 ### 2. Build and start containers
@@ -70,8 +75,7 @@ This will spin up:
 ### 3. Run the Reddit Scraper (Kafka Producer)
 In a separate terminal:
 ```bash
-docker exec -it <your-container> bash
-# or if you're running locally with a venv:
+# if you're running locally with a venv:
 source venv/bin/activate
 python ingestion/reddit_scraper.py
 ```
@@ -92,17 +96,14 @@ You can create a Kibana dashboard to show:
 - Word cloud of positive/negative posts
 - Post volume per hour/day
 
-Optional: use `monitoring/kibana_dashboard.json` to import a prebuilt dashboard.
 
-![Sentiment Dashboard](/images/kibana-dashboard.png)
+
+![Sentiment Dashboard](/assets/elasticsearch.png)
+
+![Sentiment Dashboard](/assets/Dashboard.png)
+
 
 *Sample visualization of sentiment analysis results from Reddit data*
-
-## 🏗️ Architecture
-
-![Project Architecture](/images/architecture.png)
-
-*The architecture diagram shows the data flow from Reddit through Kafka to storage and visualization.*
 
 ## 📋 Future Improvements
 
@@ -113,4 +114,4 @@ Optional: use `monitoring/kibana_dashboard.json` to import a prebuilt dashboard.
 - Add scheduling capabilities for periodic data ingestion
 
 ## 🧠 Author
-Made with ❤️ by [Your Name]
+Made with ❤️ by <b>Omar Mohamed Ahmed</b>
